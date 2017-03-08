@@ -26,8 +26,10 @@ event scan_attempt(attacker: addr, victim: addr, p: port)
 
 event new_host(h: addr)
 {
-    if(h !in known_hosts)
-        print fmt("Log New host: %s", h);
+    if(h in known_hosts)
+        return;
+    add known_hosts[h];
+    print fmt("Log New host: %s", h);
 }
 
 event bro_init()
