@@ -1,7 +1,7 @@
 global scan_attempt: event(attacker: addr, victim: addr, p: port);
 global new_host:  event(h: addr);
 global known_hosts: set[addr];
-
+global node_count: count=2 &redef;
 
 function random_src(): addr
 {
@@ -47,7 +47,7 @@ function md5_hash_count(v: any): count
 
 function send_event_hashed(key: any, args: Broker::EventArgs)
 {
-    local destination_count = 2; #FIXME: how to figure out dynamically
+    local destination_count = node_count; #FIXME: how to figure out dynamically
 
     local dest = 1+ md5_hash_count(key) % destination_count;
     local queue = fmt("bro/data/%s", dest);

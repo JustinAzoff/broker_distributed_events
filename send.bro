@@ -44,8 +44,8 @@ event go()
 
 event bro_init()
 {
-    make_conn(1);
-    make_conn(2);
-
+    local n = 0;
+    while(n < node_count)
+        make_conn(++n);
     schedule 1secs {go() };
 }
