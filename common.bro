@@ -44,3 +44,13 @@ function md5_hash_count(v: any): count
     local hex_byte = h[0];
     return hex_to_count(hex_byte);
 }
+
+function send_event_hashed(key: any, args: Broker::EventArgs)
+{
+    local destination_count = 2; #FIXME: how to figure out dynamically
+
+    local dest = 1+ md5_hash_count(key) % destination_count;
+    local queue = fmt("bro/data/%s", dest);
+    print fmt("Send hash(%s)=%s: %s", key, queue, args);
+    Broker::send_event(queue, args);
+}
