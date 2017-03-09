@@ -19,9 +19,20 @@ event Broker::incoming_connection_established(peer_name: string)
     print fmt("I am %s and I Got a connection from %s", peer_description, peer_name);
 }
 
+global scan_attacks: table[addr] of set[addr];
+global scanners: set[addr];
 event scan_attempt(attacker: addr, victim: addr, p: port)
 {
-    print fmt("Scan attempt %s -> %s:%s", attacker, victim, p);
+    if (attacker in scanners)
+        return;
+    if (attacker !in scan_attacks)
+        scan_attacks[attacker] = set();
+
+    add scan_attacks[attacker][victim];
+    if(|scan_attacks[attacker]| > 5) {
+        print fmt("NOTICE: %s is port scanner", attacker);
+        add scanners[attacker];
+    }
 }
 
 event new_host(h: addr)

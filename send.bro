@@ -37,7 +37,7 @@ function send_scan_attempt()
 
 event go()
 {
-    #send_scan_attempt();
+    send_scan_attempt();
     check_new_host(random_dst(32));
     schedule 201msecs {go() };
 }
