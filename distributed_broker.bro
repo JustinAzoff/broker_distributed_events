@@ -88,9 +88,3 @@ function send_event_hashed(key: any, args: Broker::EventArgs)
     #Reporter::info(fmt("Send hash(%s)=%s: %s", key, queue, args));
     Broker::send_event(queue, args);
 }
-
-
-event Broker::incoming_connection_established(peer_name: string)
-{
-    Reporter::info(fmt("I am %s and I Got a connection from %s", peer_description, peer_name));
-}
