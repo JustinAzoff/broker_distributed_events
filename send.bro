@@ -9,6 +9,7 @@ function make_conn(node_id: count)
 
     Broker::enable();
     Broker::connect("127.0.0.1", p, 1secs);
+    Broker::publish_topic(fmt("bro/data/%d", node_id));
 }
 
 event Broker::outgoing_connection_established(peer_address: string, peer_port: port, peer_name: string)
